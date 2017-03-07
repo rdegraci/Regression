@@ -1,37 +1,31 @@
 ## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/souvikb2005/Regression/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Regression Analysis for Continuous variable. 
 
-### Markdown
+First load the dataset. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+library(MASS)
+data(cats)
 
-```markdown
-Syntax highlighted code block
+View how the data looks like. 
 
-# Header 1
-## Header 2
-### Header 3
+head(cats)
+summary(cats)
 
-- Bulleted
-- List
+"Bwt" is the body weight in kg, "Hwt" is the heart weight in gms, and "Sex” obvious. 
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+There are several ways of plotting the data. Lets try ggplot first. 
 
-[Link](url) and ![Image](src)
-```
+library(ggplot2)
+ggplot(cats, aes(x = Bwt, y = Hwt))+ geom_point()+xlab("Body Weight")+ylab("Heart Weight")
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+We can be interested to look into how the body weight compares with heart weight for each gender
 
-### Jekyll Themes
+ggplot(cats, aes(x = Bwt, y = Hwt, group = "Sex"))+ geom_point()+facet_wrap(~Sex)+xlab("Body Weight")+ylab("Heart Weight")
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/souvikb2005/Regression/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+plot(Hwt ~ Bwt, data=cats, xlab = "Body Weight", ylab = "Heart Weight")
 
-### Support or Contact
+cor.test(Hwt ~ Bwt, data=cats)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
