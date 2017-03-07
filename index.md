@@ -3,7 +3,7 @@
 
  
 
-First load the dataset. 
+#First load the dataset. 
 
 library(MASS)
 
