@@ -138,8 +138,11 @@ x <- bwt
 curveDF <- data.frame(matrix(0,ncol = 2,nrow = 200*length(x)))
 
 for(i in 1:200)
+
 {
+
   for(j in 1:length(x))
+  
   {
     
     # Function value
@@ -148,7 +151,9 @@ for(i in 1:200)
     curveDF[j+(i-1)*200,2] <- i
     # x value
     curveDF[j+(i-1)*200,3] <- x[j]
+    
   }
+  
 }
 
 colnames(curveDF) <- c('ys','bsP','xs')
