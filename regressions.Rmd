@@ -35,6 +35,7 @@ summary(cats)
 There are several ways of plotting the data. Lets try ggplot first. 
 
 ```{r}
+plot(Hwt ~ Bwt, data=cats, xlab = "Body Weight", ylab = "Heart Weight")
 library(ggplot2)
 
 ggplot(cats, aes(x = Bwt, y = Hwt))+ geom_point()+xlab("Body Weight")+ylab("Heart Weight")
@@ -44,7 +45,7 @@ We can be interested to look into how the body weight compares with heart weight
 
 ```{r}
 ggplot(cats, aes(x = Bwt, y = Hwt, group = "Sex"))+ geom_point()+facet_wrap(~Sex)+xlab("Body Weight")+ylab("Heart Weight")
-plot(Hwt ~ Bwt, data=cats, xlab = "Body Weight", ylab = "Heart Weight")
+
 ```
 
 The graph shows a moderate relationship between Heart and Body weight. But we need a strong mathematical quantity in order to understand the effect of one variable on the other. 
