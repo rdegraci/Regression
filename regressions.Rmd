@@ -11,9 +11,14 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Regression Analysis for Continuous variable.
 
-First load the dataset. 
+First load the dataset and download the following packages. 
 
 ```{r}
+install.packages("MASS")
+install.packages("ggplot2")
+install.packages("nlstools")
+install.packages("nnet")
+
 library(MASS)
 data(cats)
 ```
