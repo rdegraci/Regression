@@ -174,12 +174,68 @@ ggplot(data = curveDF, aes(x=xs, y=ys, group=bsP)) +geom_line(col = "yellow", al
 # Categorical Variable
 
 ```{r}
+# Categorical 
+
+x = seq(0,10, length = 100)
+y = c(rep(0,50), rep(1,50))
+
+plot(x,y, xlab = "Time of day", ylab = "Probability of Sleeping")
+l1 = lm(y~x)
+abline(l1)
+
+library(nnet)
+
+data = data.frame(x,y)
+l1<- multinom(y~x, data)
+l1<- multinom(y~x, data, maxit = 500)
+l1<- multinom(y~x, data, maxit = 1000)
+l1<- multinom(y~x, data, maxit = 100000)
+
+predict(l1, data.frame(x = 5))
+newtime = seq(0,10, by = 0.1)
+
+a1 = as.numeric(coef(l1)[1])
+b1 = as.numeric(coef(l1)[2])
+fun = function(x){exp(a1 + b1*x)/(1+exp(a1 + b1*x))}
+
+
+
+prob = fun(newtime)
+plot(x,y, xlab = "Time of day", ylab = "Probability of Sleeping")
+points(newtime, prob, type = "l", col = "red")
+
+
+
+predict(l1, data.frame(x = 2))
+
+prob = predict(l1, data.frame(x = newtime))
+plot(x,y, xlab = "Time of day", ylab = "Probability of Sleeping")
+points(newtime, prob, type = "l", col = "red")
+
+
+
+prob = as.numeric(as.character(prob))
+plot(x,y, xlab = "Time of day", ylab = "Probability of Sleeping")
+points(newtime, prob, type = "l", col = "red")
+
+
+
+
+
+
 ggplot(cats,aes(x = Bwt, y = Hwt, group = Sex))+geom_point(aes(color = Sex))
 
-mod.form = "Sex ~ Bwt*Hwt"    
-glm.out = glm(mod.form, family=binomial(logit), data=cats)
-anova(glm.out, test="Chisq")
-summary(glm.out)
+l1<- multinom(Sex~poly(Bwt*Hwt,2), cats)
 
-plot(glm.out)
-```
+datanew = data.frame(Bwt = rep(seq(1,4,length = 50),50), Hwt = rep(seq(5,21, length= 50), each = 50))
+prob = predict(l1, data.frame(datanew))
+
+preddata = data.frame(Sex = prob, datanew)
+
+ggplot(preddata,aes(x = Bwt, y = Hwt, group = Sex))+geom_point(aes(color = Sex), pch = 1)+geom_point(data = cats,aes(x = Bwt, y = Hwt, color = Sex), pch = 19, lwd = 3)
+
+
+
+
+
+
