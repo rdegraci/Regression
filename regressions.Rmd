@@ -68,7 +68,7 @@ with(cats, points(Bwt[Sex=="F"], Hwt[Sex=="F"], pch=16, col="red"))
 with(cats, points(Bwt[Sex=="M"], Hwt[Sex=="M"], pch=17, col="blue"))
 ```
 
-With strong correlation, it makes sense to fit a linear model. 
+With strong correlation, it makes sense to fit a linear model as it is the most simpler one to look into. 
 
 ```{r}
 l1 = with(data = cats, lm(Bwt~Hwt))
@@ -98,6 +98,8 @@ ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_ribbon(aes(ymin 
 ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
 ```
 
+For some data sets it make sense to try 2nd degree polynomial and plot solutions using plot command or ggplot
+
 ```{r}
 l1 = with(data = cats, lm(Hwt~I(Bwt)+I(Bwt^2)))
 bwt = seq(0, 5, length = 200)
@@ -118,7 +120,7 @@ colnames(hwt) = c("HW", "Lower", "Upper")
 newdata = data.frame(BW = bwt, hwt)
 ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_ribbon(aes(ymin = Lower, ymax = Upper))+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
 ```
-
+Or may be 3rd degree might be a better choice but completely depends on the structure of data
 ```{r}
 l1 = with(data = cats, lm(Hwt~poly(Bwt,3)))
 bwt = seq(0, 5, length = 200)
@@ -140,15 +142,18 @@ newdata = data.frame(BW = bwt, hwt)
 ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_ribbon(aes(ymin = Lower, ymax = Upper))+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
 ```
 
-```{r}
-hwt = predict(l1, data.frame(Bwt = bwt), interval = "confidence")
-```
-
-Confidence interval cannot be predicted using predict function.
+We can also use regression to fit functions which are not linear or polynomial in nature. Any kind of function can be fitted using the library "nlstools". 
 
 ```{r}
 library(nlstools)
 l1 = nls(Hwt~fn(Bwt,a,b), cats, start = list(a=0,b=0.5),algorithm = "port")
+
+hwt = predict(l1, data.frame(Bwt = bwt), interval = "confidence")
+```
+
+Confidence interval cannot be predicted using predict function like the linear models before. Hence a new approach using separate code is needed to obtain confidence interval. 
+
+```{r}
 
 Boo <- nlsBoot(l1, niter = 200)
 Param_Boo <- Boo$coefboot
@@ -179,6 +184,8 @@ ggplot(data = curveDF, aes(x=xs, y=ys, group=bsP)) +geom_line(col = "yellow", al
 
 
 # Categorical Variable
+
+For data which are categorical in narure, regression is not a good solution. Regression work best for continuous datasets. But for categorical variables, it is not a good solution. Hence a different approach using logistic regression is a better choice. 
 
 ```{r}
 # Categorical 
