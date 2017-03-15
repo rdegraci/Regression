@@ -86,15 +86,16 @@ points(bwt, hwt, type = "l", col = "red")
 
 Since the data is scattered, a confidence interval can be obtained as well in the regression model
 
-```{r}
-ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
-```
+
 
 ```{r}
 hwt = predict(l1, data.frame(Bwt = bwt), interval = "confidence")
 colnames(hwt) = c("HW", "Lower", "Upper")
 newdata = data.frame(BW = bwt, hwt)
 ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_ribbon(aes(ymin = Lower, ymax = Upper))+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
+```
+```{r}
+ggplot(newdata, aes(x = BW, y = HW))+geom_line(col ="red")+geom_point(data = cats, aes(x = Bwt, y = Hwt))+xlim(c(0,5))+xlab("Body Weight")+ ylab ("Heart Weight")
 ```
 
 ```{r}
